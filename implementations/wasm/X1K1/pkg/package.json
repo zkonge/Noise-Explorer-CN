@@ -1,0 +1,15 @@
+{
+  "name": "@noiseexplorer_./X1K1/noiseexplorer_x1k1_wasm",
+  "collaborators": [
+    "Symbolic Software <georgio@symbolic.software>"
+  ],
+  "version": "1.0.0",
+  "files": [
+    "noiseexplorer_x1k1_wasm_bg.wasm",
+    "noiseexplorer_x1k1_wasm.js",
+    "noiseexplorer_x1k1_wasm.d.ts"
+  ],
+  "module": "noiseexplorer_x1k1_wasm.js",
+  "types": "noiseexplorer_x1k1_wasm.d.ts",
+  "sideEffects": "false"
+}

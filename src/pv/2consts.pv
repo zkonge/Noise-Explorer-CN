@@ -1,0 +1,19 @@
+(* ---------------------------------------------------------------- *)
+(* CONSTANTS                                                        *)
+(* ---------------------------------------------------------------- *)
+
+const phase0:phasen      [data].
+const phase1:phasen      [data].
+
+const zero:bitstring     [data].
+
+const alice:principal    [data].
+const bob:principal      [data].
+const charlie:principal  [data].
+
+const g:key              [data].
+const minnonce:nonce     [data].
+const maxnonce:nonce     [data].
+
+const empty:bitstring    [data].
+const somename:bitstring [data].

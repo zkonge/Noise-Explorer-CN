@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Noise Explorer: 命令行工具</title>
+	<meta name="keywords"
+		content="noise protocol, protocol verification, formal verification, noise protocol framework, symbolic verification" />
+	<meta name="description"
+		content="Noise Explorer is an online engine for reasoning about Noise Protocol Framework Handshake Patterns. Noise Explorer allows you to design and validate Noise Handshake Patterns, to generate cryptographic models for formal verification and to explore a compendium of formal verification results for the most popular and relevant Noise Handshake Patterns in use today." />
+	<link rel="image_src" href="https://noiseexplorer.com/res/img/logo.svg" />
+	<link rel="icon" type="image/png" href="../res/img/logo.svg" />
+	<link href="../res/css/style.css" rel="stylesheet" />
+	<link href="../res/css/fonts.css" rel="stylesheet" />
+	<script></script>
+</head>
+
+<body>
+	<div class="header">
+		<img id="logo" src="../res/img/logo.svg" alt="" />
+		<h1>Noise Explorer <span class="beta">beta</span></h1>
+	</div>
+	<div class="nav">
+		<span class="menu">菜单</span>
+		<div class="navLinks">
+			<a href="..">设计新模式</a>
+			<a href="../patterns">探索模式</a>
+			<a href="#" class="currentNav">命令行工具</a>
+			<a href="https://eprint.iacr.org/2018/766">论文</a>
+		</div>
+	</div>
+	<div class="results singleColumn">
+		<div class="resultsExplanation">
+			<h2>Noise Explorer 命令行工具</h2>
+			<p>Noise Explorer 命令行工具可以根据原始规范解析 Noise 握手模式。它可以生成用于形式化验证的加密模型，包括安全查询、高层次的处理和恶意操作者，用于针对主动或被动攻击者的测试。 </p>
+			<p>Noise Explorer 还可以将 ProVerif 输出的结果呈现为优雅且易于阅读的 HTML 格式：<a href=".../patterns">模式结果</a>是使用 Noise Explorer
+				命令行工具生成的，这些结果可以在本网站上浏览。
+			<pre>
+			$&gt; node noiseExplorer --help
+			Noise Explorer version 0.3 (specification revision 34)
+			Noise Explorer has three individual modes: generation, rendering and web interface.
+
+			Generation:
+			--generate=(json|pv|go|rs|wasm): Specify output format.
+			--pattern=[file]: Specify input pattern file (required).
+			--attacker=(active|passive): Specify ProVerif attacker type (default: active).
+
+			Rendering:
+			--render: Render results from ProVerif output files into HTML.
+			--pattern=[file]: Specify input pattern file (required).
+			--activeModel=[file]: Specify ProVerif active attacker model.
+			--activeResults=[file]: Specify active results file for --render (required).
+			--passiveResults=[file]: Specify passive results file for --render (required).
+
+			Web interface:
+			--web=(port): Make Noise Explorer's web interface available at http://localhost:(port) (default: 8000).
+
+			Help:
+			--help: View this help text.
+			</pre>
+			<h2>许可证</h2>。
+			<p>包括本网站在内的所有 Noise Explorer 软件均采用<a href="https://www.gnu.org/licenses/gpl-3.0.en.html"
+					target="_blank">GNU通用公共许可证第3版</a>进行授权。
+			<h2>下载 Noise Explorer 到您的电脑</h2>。
+			<p>欢迎您查看 Noise Explorer <a href="https://source.symbolic.software/noiseexplorer/noiseexplorer"
+					target="_blank">代码库</a></p>
+		</div>
+	</div>
+	<div class="footer">
+		<span class="about">关于</span>
+		<span>Noise Explorer</span>
+		<span style="float:right"><a href="https://symbolic.software" target="_blank">Symbolic Software</a> | <a
+				href="http://prosecco.gforge.inria.fr/" target="_blank">INRIA</a> | 由 <a
+				href="https://github.com/zkonge" target="_blank">zkonge</a> 翻译</span>
+	</div>
+</body>
+
+</html>

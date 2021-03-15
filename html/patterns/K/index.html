@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Noise Explorer: K</title>
+	<meta name="keywords"
+		content="noise protocol, protocol verification, formal verification, noise protocol framework, symbolic verification" />
+	<meta name="description"
+		content="Noise Explorer is an online engine for reasoning about Noise Protocol Framework Handshake Patterns. Noise Explorer allows you to design and validate Noise Handshake Patterns, to generate cryptographic models for formal verification and to explore a compendium of formal verification results for the most popular and relevant Noise Handshake Patterns in use today." />
+	<link rel="image_src" href="https://noiseexplorer.com/res/img/logo.svg" />
+	<link rel="icon" type="image/png" href="../../res/img/logo.svg" />
+	<link href="../../res/css/style.css" rel="stylesheet" />
+	<link href="../../res/css/fonts.css" rel="stylesheet" />
+	<script src="../../res/js/parser/noiseParser.js"></script>
+	<script src="../../res/js/parser/noise2Pv.js"></script>
+	<script src="../../res/js/parser/noise2Go.js"></script>
+	<script src="../../res/js/parser/noise2Rs.js"></script>
+	<script src="../../res/js/parser/noise2Wasm.js"></script>
+	<script src="../../res/js/parser/noiseReader.js"></script>
+	<script src="../../res/js/jszip.js"></script>
+	<script src="../../res/js/noiseWebIde.js"></script>
+	<script>
+		window.addEventListener('load', () => {
+			pvGen(['K:','  -> s','  <- s','  ...','  -> e, es, ss'].join('\n'), 'active', 'pvActiveLink', false);
+			pvGen(['K:','  -> s','  <- s','  ...','  -> e, es, ss'].join('\n'), 'passive', 'pvPassiveLink', false);
+			goGen(['K:','  -> s','  <- s','  ...','  -> e, es, ss'].join('\n'), 'goLink', false);
+			rsGen(['K:','  -> s','  <- s','  ...','  -> e, es, ss'].join('\n'), 'rsLink', false);
+			wasmGen(['K:','  -> s','  <- s','  ...','  -> e, es, ss'].join('\n'), 'wasmLink', false);
+		});
+	</script>
+</head>
+
+<body>
+	<div class="header">
+		<img id="logo" src="../../res/img/logo.svg" alt="" />
+		<h1>Noise Explorer <span class="beta">beta</span></h1>
+	</div>
+	<div class="nav">
+		<span class="menu">菜单</span>
+		<div class="navLinks">
+			<a href="../..">设计新模式</a>
+			<a href="../../patterns" class="currentNav">探索模式</a>
+			<a href="../../cmd">命令行工具</a>
+			<a href="https://eprint.iacr.org/2018/766">论文</a>
+		</div>
+	</div>
+	<div class="results" style="height: 720px;">
+		<div class="arrowsFrame">
+			<h1 id="patternName">K</h1>
+			<div class="arrows" style="height: 720px;">
+				<svg id="patternArrows" style="height: 720px;">
+					<line x1="1" x2="248" y1="30" y2="30"></line>
+					<polyline points="237 20 248 30 237 40"></polyline>
+					<text class="tokens" x="120" y="22">s</text>
+<line x2="248" y1="190" y2="190"></line>
+					<polyline  points="10 180 1 190 10 200"></polyline>
+					<text class="tokens" x="120" y="182">s</text>
+
+				<text class="ellipsis" x="120" y="350">...</text>
+<line data-seclevel="2" x1="1" x2="248" y1="510" y2="510"></line>
+					<polyline data-seclevel="2" points="237 500 248 510 237 520"></polyline>
+					<circle data-seclevel="1" cx="17" cy="510" r="15"></circle>
+					<text class="msg" x="16" y="515">a</text>
+					<text class="tokens" x="120" y="502">e, es, ss</text>
+				</svg>
+			</div>
+		</div>
+		<div class="resultsExplanation" style="height: 720px;">
+			<h2>握手模式分析</h2>
+			<p>发起者用预共享的长期静态密钥进行初始化，假定响应者z可信信道上预先进行了认证。</p> 
+			
+<p>响应者用预共享的长期静态密钥进行初始化，假定发起者z可信信道上预先进行了认证。</p> 
+			
+
+			<h3>消息 A <a href="/patterns/K/A.html" class="detailedAnalysis">显示分析细节</a></h3>
+			<p>消息 A, 由 发起者 发送, 受益于<em>接收者认证</em>，但<em>容易受到密钥泄露假冒</em>的影响。如果响应者的长期私钥被泄露，这种认证就会被伪造。但是，如果发起者与另一个被泄露的响应者进行单独的会话，这个另外的会话可以被用来伪造这个会话中响应者对这个消息的认证. 消息内容得益于<em>消息保密</em>和一些<em>前向保密</em>：响应者的长期私钥泄露，即使在以后的日子里，也会导致消息内容被攻击者解密.  <span class="resultNums">1,2</span></p>
+			<h3>生成用于形式化验证的密码学模型</h3>
+			<p>
+				<a href="#" id="pvActiveLink">
+					获取模型
+					<span class="modelType">活动的攻击者</span>
+				</a>
+				<a href="#" id="pvPassiveLink">
+					获取模型
+					<span class="modelType">被动攻击者 (passive attacker)</span>
+				</a>
+			</p>
+			<h3>生成安全协议执行代码</h3>
+			<p>
+				<a href="#" id="goLink">
+					获取实现
+					<span class="modelType">Go 语言实现</span>
+				</a>
+				<a href="#" id="rsLink">
+					获取实现
+					<span class="modelType">Rust 语言实现</span>
+				</a>
+			</p>
+			<h3>为 WebAssembly 构建生成的 Rust 实现代码。</h3>
+			<p>
+				<a href="#" id="wasmLink">
+					获取实现
+					<span class="modelType">Wasm 实现</span>
+				</a>
+			</p>
+		</div>
+	</div>
+	<div class="footer">
+		<span class="about">关于</span>
+		<span>Noise Explorer</span>
+		<span style="float:right"><a href="https://symbolic.software" target="_blank">Symbolic Software</a> | <a
+				href="http://prosecco.gforge.inria.fr/" target="_blank">INRIA</a> | 由 <a
+				href="https://github.com/zkonge" target="_blank">zkonge</a> 翻译</span>
+	</div>
+	</div>
+</body>
+
+</html>

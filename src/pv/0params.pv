@@ -1,0 +1,8 @@
+(* ---------------------------------------------------------------- *)
+(* PARAMETERS                                                       *)
+(* ---------------------------------------------------------------- *)
+
+set expandIfTermsToTerms = true.
+set traceBacktracking = false.
+set reconstructTrace = false.
+(* $NOISE2PV_T$ *)

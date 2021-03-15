@@ -1,0 +1,22 @@
+# Node
+node_modules
+package-lock.json
+
+# Noise Parser
+noiseParser.js
+
+# macOS
+.DS_Store
+
+# Go
+go.mod
+go.sum
+
+# Rust
+Cargo.lock
+*.log
+target/
+
+# Visual Studio Code
+rust-test.code-workspace
+.vscode

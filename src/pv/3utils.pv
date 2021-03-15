@@ -1,0 +1,7 @@
+(* ---------------------------------------------------------------- *)
+(* STRING CONCATENATION                                             *)
+(* ---------------------------------------------------------------- *)
+
+fun concat3(bitstring, bitstring, bitstring):bitstring [data].
+reduc forall a:bitstring, b:bitstring, c:bitstring;
+	deconcat3(concat3(a, b, c)) = (a, b, c).

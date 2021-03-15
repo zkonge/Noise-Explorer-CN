@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Noise Explorer: Explore Patterns</title>
+	<meta name="keywords" content="noise protocol, protocol verification, formal verification, noise protocol framework, symbolic verification" />
+	<meta name="description" content="Noise Explorer is an online engine for reasoning about Noise Protocol Framework Handshake Patterns. Noise Explorer allows you to design and validate Noise Handshake Patterns, to generate cryptographic models for formal verification and to explore a compendium of formal verification results for the most popular and relevant Noise Handshake Patterns in use today." />
+	<link rel="image_src" href="https://noiseexplorer.com/res/img/logo.svg" />
+	<link rel="icon" type="image/png" href="../res/img/logo.svg" />
+	<link href="../res/css/style.css" rel="stylesheet" />
+	<link href="../res/css/fonts.css" rel="stylesheet" />
+	<script>
+		let $ = (id) => { return document.getElementById(id) };
+		window.addEventListener('load', () => {
+			$('patternSearch').value = '';
+			$('patternSearch').addEventListener('input', (event) => {
+				let value = $('patternSearch').value.toLowerCase();
+				let entries = document.getElementsByClassName('patternEntry');
+				if (value.length) {
+					let visible = entries.length;
+					for (let i = 0; i < entries.length; i++) {
+						let name = entries[i].innerText.split(':')[0].toLowerCase();
+						if (name.match(value)) {
+							entries[i].classList.remove('hidden');
+						} else {
+							entries[i].classList.add('hidden');
+							visible--;
+						}
+					}
+					if (visible) {
+						$('patternSearchNotFound').classList.remove('visible');
+					} else {
+						$('patternSearchNotFound').classList.add('visible');
+					}
+				} else {
+					for (let i = 0; i < entries.length; i++) {
+						entries[i].classList.remove('hidden');
+					}
+					$('patternSearchNotFound').classList.remove('visible');
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div class="header">
+		<img id="logo" src="../res/img/logo.svg" alt="" />
+		<h1>Noise Explorer <span class="beta">beta</span></h1>
+	</div>
+	<div class="nav">
+		<span class="menu">菜单</span>
+		<div class="navLinks">
+			<a href="..">设计新模式</a>
+			<a href="#" class="currentNav">探索模式</a>
+			<a href="../cmd">命令行工具</a>
+			<a href="https://eprint.iacr.org/2018/766">论文</a>
+		</div>
+	</div>
+	<div class="results singleColumn">
+		<div class="resultsExplanation">
+			<h2>探索 Noise 模式分析结果</h2>
+			<p>点击 Noise 模式，以使用<a href="http://prosecco.gforge.inria.fr/personal/bblanche/proverif/" target="_blank">ProVerif</a> 符号协议验证器查看其完整的分析结果。分析是在主动和被动攻击者与恶意操作者下进行的。安全性查询包括认证性（密钥泄露抗冒充性等）和保密性（强前向保密性、弱前向保密性等）的测试。</p>
+			<input type="text" id="patternSearch" placeholder="Search patterns by name..." />
+			<p id="patternSearchNotFound">Noise 握手模式未找到。</p>
+			<a href="/patterns/IK" class="patternEntry">
+				IK:
+				&lt;- s
+				...
+				-&gt; e, es, s, ss
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/IN" class="patternEntry">
+				IN:
+				-&gt; e, s
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/IX" class="patternEntry">
+				IX:
+				-&gt; e, s
+				&lt;- e, ee, se, s, es
+			</a>
+			<a href="/patterns/K" class="patternEntry">
+				K:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; e, es, ss
+			</a>
+			<a href="/patterns/KK" class="patternEntry">
+				KK:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; e, es, ss
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/KN" class="patternEntry">
+				KN:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/KX" class="patternEntry">
+				KX:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, se, s, es
+			</a>
+			<a href="/patterns/N" class="patternEntry">
+				N:
+				&lt;- s
+				...
+				-&gt; e, es
+			</a>
+			<a href="/patterns/NK" class="patternEntry">
+				NK:
+				&lt;- s
+				...
+				-&gt; e, es 
+				&lt;- e, ee
+			</a>
+			<a href="/patterns/NN" class="patternEntry">
+				NN:
+				-&gt; e
+				&lt;- e, ee
+			</a>
+			<a href="/patterns/NX" class="patternEntry">
+				NX:
+				-&gt; e
+				&lt;- e, ee, s, es
+			</a>
+			<a href="/patterns/XK" class="patternEntry">
+				XK:
+				&lt;- s
+				...
+				-&gt; e, es
+				&lt;- e, ee
+				-&gt; s, se
+			</a>
+			<a href="/patterns/XN" class="patternEntry">
+				XN:
+				-&gt; e
+				&lt;- e, ee
+				-&gt; s, se
+			</a>
+			<a href="/patterns/XX" class="patternEntry">
+				XX:
+				-&gt; e
+				&lt;- e, ee, s, es
+				-&gt; s, se
+			</a>
+			<a href="/patterns/NK1" class="patternEntry">
+				NK1:
+				&lt;- s
+				...
+				-&gt; e
+				&lt;- e, ee, es
+			</a>
+			<a href="/patterns/NX1" class="patternEntry">
+				NX1:
+				-&gt; e
+				&lt;- e, ee, s
+				-&gt; es
+			</a>
+			<a href="/patterns/X" class="patternEntry">
+				X:
+				&lt;- s
+				...
+				-&gt; e, es, s, ss
+			</a>
+			<a href="/patterns/X1K" class="patternEntry">
+				X1K:
+				&lt;- s
+				...
+				-&gt; e, es
+				&lt;- e, ee
+				-&gt; s
+				&lt;- se
+			</a>
+			<a href="/patterns/XK1" class="patternEntry">
+				XK1:
+				&lt;- s
+				...
+				-&gt; e
+				&lt;- e, ee, es
+				-&gt; s, se
+			</a>
+			<a href="/patterns/X1K1" class="patternEntry">
+				X1K1:
+				&lt;- s
+				...
+				-&gt; e
+				&lt;- e, ee, es
+				-&gt; s
+				&lt;- se
+			</a>
+			<a href="/patterns/X1N" class="patternEntry">
+				X1N:
+				-&gt; e
+				&lt;- e, ee
+				-&gt; s
+				&lt;- se
+			</a>
+			<a href="/patterns/X1X" class="patternEntry">
+				X1X:
+				-&gt; e
+				&lt;- e, ee, s, es
+				-&gt; s
+				&lt;- se
+			</a>
+			<a href="/patterns/XX1" class="patternEntry">
+				XX1:
+				-&gt; e
+				&lt;- e, ee, s
+				-&gt; es, s, se
+			</a>
+			<a href="/patterns/X1X1" class="patternEntry">
+				X1X1:
+				-&gt; e
+				&lt;- e, ee, s
+				-&gt; es, s
+				&lt;- se
+			</a>
+			<a href="/patterns/K1N" class="patternEntry">
+				K1N:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee
+				-&gt; se
+			</a>
+			<a href="/patterns/K1K" class="patternEntry">
+				K1K:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; e, es
+				&lt;- e, ee
+				-&gt; se
+			</a>
+			<a href="/patterns/KK1" class="patternEntry">
+				KK1:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; e
+				&lt;- e, ee, se, es
+			</a>
+			<a href="/patterns/K1K1" class="patternEntry">
+				K1K1:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; e
+				&lt;- e, ee, es
+				-&gt; se
+			</a>
+			<a href="/patterns/K1X" class="patternEntry">
+				K1X:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, s, es
+				-&gt; se
+			</a>
+			<a href="/patterns/KX1" class="patternEntry">
+				KX1:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, se, s
+				-&gt; es
+			</a>
+			<a href="/patterns/K1X1" class="patternEntry">
+				K1X1:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, s
+				-&gt; se, es
+			</a>
+			<a href="/patterns/I1N" class="patternEntry">
+				I1N:
+				-&gt; e, s
+				&lt;- e, ee
+				-&gt; se
+			</a>
+			<a href="/patterns/I1K" class="patternEntry">
+				I1K:
+				&lt;- s
+				...
+				-&gt; e, es, s
+				&lt;- e, ee
+				-&gt; se
+			</a>
+			<a href="/patterns/IK1" class="patternEntry">
+				IK1:
+				&lt;- s
+				...
+				-&gt; e, s
+				&lt;- e, ee, se, es
+			</a>
+			<a href="/patterns/I1K1" class="patternEntry">
+				I1K1:
+				&lt;- s
+				...
+				-&gt; e, s
+				&lt;- e, ee, es
+				-&gt; se
+			</a>
+			<a href="/patterns/I1X" class="patternEntry">
+				I1X:
+				-&gt; e, s
+				&lt;- e, ee, s, es
+				-&gt; se
+			</a>
+			<a href="/patterns/IX1" class="patternEntry">
+				IX1:
+				-&gt; e, s
+				&lt;- e, ee, se, s
+				-&gt; es
+			</a>
+			<a href="/patterns/I1X1" class="patternEntry">
+				I1X1:
+				-&gt; e, s
+				&lt;- e, ee, s
+				-&gt; se, es
+			</a>
+			<a href="/patterns/Npsk0" class="patternEntry">
+				Npsk0:
+				&lt;- s
+				...
+				-&gt; psk, e, es
+			</a>
+			<a href="/patterns/Kpsk0" class="patternEntry">
+				Kpsk0:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; psk, e, es, ss
+			</a>
+			<a href="/patterns/Xpsk1" class="patternEntry">
+				Xpsk1:
+				&lt;- s
+				...
+				-&gt; e, es, s, ss, psk
+			</a>
+			<a href="/patterns/NNpsk0" class="patternEntry">
+				NNpsk0:
+				-&gt; psk, e
+				&lt;- e, ee
+			</a>
+			<a href="/patterns/NNpsk2" class="patternEntry">
+				NNpsk2:
+				-&gt; e
+				&lt;- e, ee, psk
+			</a>
+			<a href="/patterns/NKpsk0" class="patternEntry">
+				NKpsk0:
+				&lt;- s
+				...
+				-&gt; psk, e, es
+				&lt;- e, ee
+			</a>
+			<a href="/patterns/NKpsk2" class="patternEntry">
+				NKpsk2:
+				&lt;- s
+				...
+				-&gt; e, es
+				&lt;- e, ee, psk
+			</a>
+			<a href="/patterns/NXpsk2" class="patternEntry">
+				NXpsk2:
+				-&gt; e
+				&lt;- e, ee, s, es, psk
+			</a>
+			<a href="/patterns/XNpsk3" class="patternEntry">
+				XNpsk3:
+				-&gt; e
+				&lt;- e, ee
+				-&gt; s, se, psk
+			</a>
+			<a href="/patterns/XKpsk3" class="patternEntry">
+				XKpsk3:
+				&lt;- s
+				...
+				-&gt; e, es
+				&lt;- e, ee
+				-&gt; s, se, psk
+			</a>
+			<a href="/patterns/XXpsk3" class="patternEntry">
+				XXpsk3:
+				-&gt; e
+				&lt;- e, ee, s, es
+				-&gt; s, se, psk
+			</a>
+			<a href="/patterns/KNpsk0" class="patternEntry">
+				KNpsk0:
+				-&gt; s
+				...
+				-&gt; psk, e
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/KNpsk2" class="patternEntry">
+				KNpsk2:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, se, psk
+			</a>
+			<a href="/patterns/KKpsk0" class="patternEntry">
+				KKpsk0:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; psk, e, es, ss
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/KKpsk2" class="patternEntry">
+				KKpsk2:
+				-&gt; s
+				&lt;- s
+				...
+				-&gt; e, es, ss
+				&lt;- e, ee, se, psk
+			</a>
+			<a href="/patterns/KXpsk2" class="patternEntry">
+				KXpsk2:
+				-&gt; s
+				...
+				-&gt; e
+				&lt;- e, ee, se, s, es, psk
+			</a>
+			<a href="/patterns/INpsk1" class="patternEntry">
+				INpsk1:
+				-&gt; e, s, psk
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/INpsk2" class="patternEntry">
+				INpsk2:
+				-&gt; e, s
+				&lt;- e, ee, se, psk
+			</a>
+			<a href="/patterns/IKpsk1" class="patternEntry">
+				IKpsk1:
+				&lt;- s
+				...
+				-&gt; e, es, s, ss, psk
+				&lt;- e, ee, se
+			</a>
+			<a href="/patterns/IKpsk2" class="patternEntry">
+				IKpsk2:
+				&lt;- s
+				...
+				-&gt; e, es, s, ss
+				&lt;- e, ee, se, psk
+			</a>
+			<a href="/patterns/IXpsk2" class="patternEntry">
+				IXpsk2:
+				-&gt; e, s
+				&lt;- e, ee, se, s, es, psk
+			</a>
+		</div>
+	</div>
+	<div class="footer">
+		<span class="about">关于</span>
+		<span>Noise Explorer</span>
+		<span style="float:right"><a href="https://symbolic.software" target="_blank">Symbolic Software</a> | <a href="http://prosecco.gforge.inria.fr/" target="_blank">INRIA</a></span>
+	</div>
+</body>
+
+</html>

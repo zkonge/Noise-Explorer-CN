@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Noise Explorer: KX1 - 消息 E</title>
+	<meta name="keywords"
+		content="noise protocol, protocol verification, formal verification, noise protocol framework, symbolic verification" />
+	<meta name="description"
+		content="Noise Explorer is an online engine for reasoning about Noise Protocol Framework Handshake Patterns. Noise Explorer allows you to design and validate Noise Handshake Patterns, to generate cryptographic models for formal verification and to explore a compendium of formal verification results for the most popular and relevant Noise Handshake Patterns in use today." />
+	<link rel="image_src" href="https://noiseexplorer.com/res/img/logo.svg" />
+	<link rel="icon" type="image/png" href="../../res/img/logo.svg" />
+	<link href="../../res/css/style.css" rel="stylesheet" />
+	<link href="../../res/css/fonts.css" rel="stylesheet" />
+	<script></script>
+</head>
+
+<body>
+	<div class="header">
+		<img id="logo" src="../../res/img/logo.svg" alt="" />
+		<h1>Noise Explorer <span class="beta">beta</span></h1>
+	</div>
+	<div class="nav">
+		<span class="menu">menu</span>
+		<div class="navLinks">
+			<a href="../..">设计新模式</a>
+			<a href="../../patterns" class="currentNav">探索模式</a>
+			<a href="../../cmd">命令行工具</a>
+			<a href="https://eprint.iacr.org/2018/766">论文</a>
+		</div>
+	</div>
+	<div class="results detailed">
+		<div class="arrowsFrame">
+			<h1 id="patternName"><a href="index.html">KX1</a></h1>
+			<div class="arrows">
+				<svg id="patternArrows">
+					<line data-seclevel="5" x1="1" x2="500" y1="70" y2="70"></line>
+					<polyline data-seclevel="5" points="480,50 500,70 480,90"></polyline>
+					<circle data-seclevel="4" cx="29" cy="70" r="25"></circle>
+					<text class="msg" x="29" y="77">e</text>
+					<text class="tokens" x="240" y="50"></text>
+				</svg>
+			</div>
+		</div>
+		<div class="resultsExplanation">
+			<h2>消息模式分析</h2>
+			<p>消息 <span class="mono">E</span> 是在 <span class="mono">KX1</span> Noise 握手模式中的第 五 条消息。是由发起者发给响应者的。 在此详细分析中，我们试图给您一些关于此消息背后协议逻辑的见解。这里给出的见解并不能完全扩展到完全说明形式化模型所进行的确切的状态转换，但至少进行了非正式的描述，以帮助说明消息 <span class="mono">E</span> 如何影响协议。</p>
+<h3>发送中的 消息 <span class="mono">E</span></h3>
+<p>在应用Π计算的过程中，发起者过程使用以下函数准备消息：<span class="mono">E</span>。</p>
+<p class="proverif">
+letfun writeMessage_e(me:principal, them:principal, hs:handshakestate, payload:bitstring, sid:sessionid) =
+	let (ss:symmetricstate, s:keypair, e:keypair, rs:key, re:key, psk:key, initiator:bool) = handshakestateunpack(hs) in
+	let (ne:bitstring, ns:bitstring, ciphertext:bitstring) = (empty, empty, empty) in
+	let (ss:symmetricstate, ciphertext:bitstring) = encryptAndHash(ss, payload) in
+	let hs = handshakestatepack(ss, s, e, rs, re, psk, initiator) in
+	let message_buffer = concat3(ne, ns, ciphertext) in
+	(hs, message_buffer).
+</p>
+由于消息<span class="mono">E</span>不包含任何令牌，因此它被认为是纯粹的“应用数据”类型消息，旨在传输被加密的有效载荷。
+<p>如果静态公钥作为此消息的一部分进行了通信，那么它将被加密为 <span class="mono">ciphertext1</span>。然而，由于发起者在这里没有传递静态公钥，因此该值将被留为空值。
+<p>消息<span class="code">E</span>的载荷被建模为函数<span class="mono">msg_a(发起者身份, 响应者身份, 会话ID)</span>的输出，被加密为<span class="mono">ciphertext2</span>。这将调用以下操作：</p><ul>
+<li><span class="mono">encryptAndHash</span> 在有效载荷上执行带有附加数据的验证加密(AEAD)，并将会话哈希作为附加数据(<span class="mono">encryptWithAd</span>)和<span class="mono">mixHash</span>，它将加密后的有效载荷哈希到下一个会话哈希中。</li>
+</ul>
+<h3>接受中的 消息 <span class="mono">E</span></h3>
+<p>在应用Π计算的过程中，发起者过程使用以下函数准备消息：<span class="mono">E</span>。</p>
+<p class="proverif">
+letfun readMessage_e(me:principal, them:principal, hs:handshakestate, message:bitstring, sid:sessionid) =
+	let (ss:symmetricstate, s:keypair, e:keypair, rs:key, re:key, psk:key, initiator:bool) = handshakestateunpack(hs) in
+	let (ne:bitstring, ns:bitstring, ciphertext:bitstring) = deconcat3(message) in
+	let valid1 = true in
+	let (ss:symmetricstate, plaintext:bitstring, valid2:bool) = decryptAndHash(ss, ciphertext) in
+	if ((valid1 && valid2)) then (
+		let hs = handshakestatepack(ss, s, e, rs, re, psk, initiator) in
+		(hs, plaintext, true)
+	).
+</p>
+由于消息<span class="mono">E</span>不包含任何令牌，因此它被认为是纯粹的“应用数据”类型消息，旨在传输被加密的有效载荷。
+<p>如果静态公钥作为此消息的一部分进行了通信，那么它将被加密为 <span class="mono">ciphertext1</span>。然而，由于发起者在这里没有传递静态公钥，因此该值将被留为空值。
+<p>消息<span class="code">E</span>的载荷被建模为函数<span class="mono">msg_a(发起者身份, 响应者身份, 会话ID)</span>的输出，被加密为<span class="mono">ciphertext2</span>。这将调用以下操作：</p><ul>
+<li><span class="mono">decryptAndHash</span> 在有效载荷上执行带有附加数据的验证解密(AEAD)，并将会话哈希作为附加数据(<span class="mono">decryptWithAd</span>)和<span class="mono">mixHash</span>，它将加密后的有效载荷哈希到下一个会话哈希中。</li>
+</ul>
+<h3>请求与结果</h3>
+消息<span class="mono">E</span>是针对4个认证查询和5个保密查询进行测试。
+<h4>身份认证等级 1: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT event(RecvMsg(bob,alice,stagepack_e(sid_b),m)) ==> event(SendMsg(alice,c_1277,stagepack_e(sid_a),m)) || event(LeakS(phase0,alice)) || event(LeakS(phase0,bob)) is true.</p>
+<p>在这个查询中，我们测试<em>发送者身份认证</em>和<em>消息完整性</em>。如果Bob收到Alice的有效消息，那么Alice一定是将该消息发送给了<em>某人</em>，或者Alice在会话开始之前，他们的静态密钥就已经泄露了，或者Bob在会话开始之前，他们的静态密钥就已经泄露了</p>
+<h4>身份认证等级 2: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT event(RecvMsg(bob,alice,stagepack_e(sid_b),m)) ==> event(SendMsg(alice,c_1277,stagepack_e(sid_a),m)) || event(LeakS(phase0,alice)) is true.</p>
+<p>在这个查询中，我们测试<em>发送者身份认证</em>与其是否抵抗<em>假冒密钥</em>。如果Bob收到Alice的有效消息，那么Alice一定是将该消息发送给了<em>某人</em>，或者Alice在会话开始之前，他们的静态密钥已经被泄露了。</p>
+<h4>身份认证等级 3: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT event(RecvMsg(bob,alice,stagepack_e(sid_b),m)) ==> event(SendMsg(alice,bob,stagepack_e(sid_a),m)) || event(LeakS(phase0,alice)) || event(LeakS(phase0,bob)) is true.</p>
+<p>在这个查询中，我们测试<em>发送者和接收者的身份验证</em>以及<em>消息的完整性</em>。如果Bob收到Alice发来的有效消息，那么Alice一定是向<em>Bob，或者Alice在会话开始之前，他们的静态密钥就已经被泄露了，或者Bob在会话开始之前，他们的静态密钥就已经被泄露了。</p>
+<h4>身份认证等级 4: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT event(RecvMsg(bob,alice,stagepack_e(sid_b),m)) ==> event(SendMsg(alice,bob,stagepack_e(sid_a),m)) || event(LeakS(phase0,alice)) is true.</p>
+<p>在这个查询中，我们测试<em>发送者和接收者的身份验证</em>以及是否抵抗<em>假冒密钥</em>。如果Bob收到Alice的有效消息，那么Alice一定是将该消息发送给<em>Bob专门发送了该消息</em>，或者Alice在会话开始之前，他们的静态密钥已经被泄露了</p>
+<h4>保密等级 1: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT attacker_p1(msg_e(alice,bob,sid_a)) ==> event(LeakS(px,bob)) is true.</p>
+<p>在这个查询中，我们通过检查被动攻击者是否只能通过在协议会话之前或之后破坏Bob的静态密钥，来测试<em>消息保密性</em>。</p>
+<h4>保密等级 2: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT attacker_p1(msg_e(alice,bob,sid_a)) ==> event(LeakS(px,bob)) is true.</p>
+<p>在这个查询中，我们测试<em>消息保密性</em>，检查主动攻击者是否只能通过在协议会话之前或之后破坏Bob的静态密钥来检索有效载荷的明文。</p>
+<h4>保密等级 3: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT attacker_p1(msg_e(alice,bob,sid_a)) ==> event(LeakS(phase0,bob)) || (event(LeakS(px,bob)) && event(LeakS(pz,alice))) is true.</p>
+<p>在这个查询中，我们通过检查被动攻击者是否只能通过破坏Bob的ob来检索有效载荷明文来测试<em>前向保密性</em>。在协议会话之前后的任何时候与Alice的静态密钥一起进行检索。</p>
+<h4>保密等级 4: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT attacker_p1(msg_e(alice,bob,sid_a)) ==> event(LeakS(phase0,bob)) || (event(LeakS(px,bob)) && event(LeakS(pz,alice))) is true.</p>
+<p>在这个查询中，我们通过检查主动攻击者是否只能通过破坏Bob的ob来检索有效载荷明文来测试<em>弱前向保密性</em>。在协议会话之前后的任何时候与Alice的静态密钥一起，都能检索到明文。</p>
+<h4>保密等级 5: <span class="passed">通过</span></h4>
+<p class="proverif"><br />RESULT attacker_p1(msg_e(alice,bob,sid_a)) ==> event(LeakS(phase0,bob)) is true.</p>
+<p>在这个查询中，我们通过检查主动攻击者是否能够在协议会话之前只有通过破坏Bob的静态密钥来检索有效载荷明文来测试<em>强前向保密性</em>。</p>
+		</div>
+	</div>
+	<div class="footer">
+		<span class="about">关于</span>
+		<span>Noise Explorer</span>
+		<span style="float:right"><a href="https://symbolic.software" target="_blank">Symbolic Software</a> | <a
+				href="http://prosecco.gforge.inria.fr/" target="_blank">INRIA</a> | 由 <a
+				href="https://github.com/zkonge" target="_blank">zkonge</a> 翻译</span>
+	</div>
+	</div>
+</body>
+
+</html>

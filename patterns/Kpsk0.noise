@@ -1,0 +1,5 @@
+Kpsk0:
+  -> s
+  <- s
+  ...
+  -> psk, e, es, ss
